@@ -550,15 +550,15 @@ namespace System.Windows.Forms
             ToolTip tooltip = new ToolTip(new Container());
             tooltip.SetToolTip(lblSizeDesc, "The size of the REL file, in bytes.");
             tooltip.SetToolTip(lblSizeValue, "The size of the REL file, in bytes.");
-            tooltip.SetToolTip(lblNameValue, "The internal name of the REL file (pointer at 0x74.)");
+            tooltip.SetToolTip(lblNameValue, "The first ASCII string in the file that begins with \"st\".");
             tooltip.SetToolTip(lblOffsetDesc, "The offset of the stage ID, in bytes.");
             tooltip.SetToolTip(lblOffsetValue, "The offset of the stage ID, in bytes.");
-            tooltip.SetToolTip(lblIDDesc, "The stage ID (automatically detected, with certain hard-coded exceptions for NTSC-U and PAL files.)");
-            tooltip.SetToolTip(lblIDValue, "The stage ID (automatically detected, with certain hard-coded exceptions for NTSC-U and PAL files.)");
-            tooltip.SetToolTip(lblCurrentStageDesc, "The current target stage of this REL file, as determined by its ID.");
-            tooltip.SetToolTip(lblCurrentStage, "The current target stage of this REL file, as determined by its ID.");
-            tooltip.SetToolTip(lblNewStageDesc, "The new target stage for this REL file.");
-            tooltip.SetToolTip(stageSelection, "The new target stage for this REL file.");
+            tooltip.SetToolTip(lblIDDesc, "The stage ID (in the sequence 38 ?? 00 ?? 38 A5 00 00 38 80 00 XX.)");
+			tooltip.SetToolTip(lblIDValue, "The stage ID (in the sequence 38 ?? 00 ?? 38 A5 00 00 38 80 00 XX.)");
+            tooltip.SetToolTip(lblCurrentStageDesc, "The stage this REL file currently replaces, as determined by its ID.");
+			tooltip.SetToolTip(lblCurrentStage, "The stage this REL file currently replaces, as determined by its ID.");
+            tooltip.SetToolTip(lblNewStageDesc, "The new stage for this REL file to replace.");
+			tooltip.SetToolTip(stageSelection, "The new stage for this REL file to replace.");
             tooltip.SetToolTip(lblItemDesc, "The item to auto-spawn on the stage. Enabled when you use a StOnlineTrainning base. Replaces four bytes (offsets are hard-coded.)");
             tooltip.SetToolTip(itemSelection, "The item to auto-spawn on the stage. Enabled when you use a StOnlineTrainning base. Replaces four bytes (offsets are hard-coded.)");
             #endregion
