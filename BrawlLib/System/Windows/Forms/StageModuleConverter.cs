@@ -620,7 +620,7 @@ namespace System.Windows.Forms
             input.Dispose();
 
             lblSizeValue.Text = _data.Length.ToString();
-            lblNameValue.Text = getModuleName();
+            lblNameValue.Text = getModuleName() ?? "Name not found";
             _stageIDOffset = findStageIDOffset();
             if (_stageIDOffset < 0)
             {
@@ -660,26 +660,15 @@ namespace System.Windows.Forms
             return _data[_stageIDOffset];
         }
 
-        private string getModuleName()
+        private unsafe string getModuleName()
         {
-            int offset = _data[116];
-            for (int i = 117; i < 120; i++)
-            {
-                offset *= 256;
-                offset += _data[i];
-            }
+            byte?[] searchFor = { (byte)'s', (byte)'t' };
 
-            StringBuilder sb = new StringBuilder();
-            while (_data[offset] == 0)
-            {
-                offset++;
+            int index = arrayIndexOf(_data, searchFor);
+            if (index < 0) return null;
+            fixed (byte* ptr = _data) {
+                return new string((sbyte*)ptr + index);
             }
-            while (_data[offset] != 0)
-            {
-                sb.Append((char)_data[offset]);
-                offset++;
-            }
-            return sb.ToString();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -706,25 +695,32 @@ namespace System.Windows.Forms
             Close();
         }
 
-        private int findStageIDOffset()
+        private static int arrayIndexOf(byte[] haystack, byte?[] needle)
         {
-            // search through pointer
-            int length = _data.Length;
-            byte?[] searchFor = { 0x38, null, 0x00, null,
-                                  0x38, 0xA5, 0x00, 0x00,
-                                  0x38, 0x80, 0x00 };
+            int length = haystack.Length;
 
             int indexToCheck = 0;
             for (int i = 0; i < length; i++) {
-                byte? b = searchFor[indexToCheck];
-                if ((b ?? _data[i]) == _data[i]) {
+                byte? b = needle[indexToCheck];
+                if ((b ?? haystack[i]) == haystack[i]) {
                     indexToCheck++;
-                    if (indexToCheck == searchFor.Length) return i + 1;
+                    if (indexToCheck == needle.Length) return i + 1 - needle.Length;
                 } else {
                     indexToCheck = 0;
                 }
             }
             return -1;
+        }
+
+        private int findStageIDOffset()
+        {
+            byte?[] searchFor = { 0x38, null, 0x00, null,
+                                  0x38, 0xA5, 0x00, 0x00,
+                                  0x38, 0x80, 0x00 };
+            int index = arrayIndexOf(_data, searchFor);
+            return index < 0
+                ? -1
+                : index + 11;
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
