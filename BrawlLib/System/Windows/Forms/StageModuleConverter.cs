@@ -100,6 +100,7 @@ namespace System.Windows.Forms
             new Stage(0x36, "Heal",                   "st_heal.rel",       "heal"),
             new Stage(0x37, "Online Training",        "st_otrain.rel",     "onlinetraining"),
             new Stage(0x38, "TargetBreak",            "st_tbreak.rel",     "targetlv"),
+            new Stage(0x39, "Classic mode credits",   "st_croll.rel",      "chararoll"),
         };
 
         #region Designer
